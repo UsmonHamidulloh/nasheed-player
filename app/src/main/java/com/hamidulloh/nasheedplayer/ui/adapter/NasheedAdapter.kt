@@ -8,7 +8,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.hamidulloh.nasheedplayer.databinding.ItemNasheedBinding
 import com.hamidulloh.nasheedplayer.model.Nasheed
 
-class NasheedAdapter : ListAdapter<Nasheed, NasheedAdapter.ViewHolder>(NasheedDiffCallback()) {
+class NasheedAdapter(
+    val itemClickListener: NasheedItemCallback
+) : ListAdapter<Nasheed, NasheedAdapter.ViewHolder>(NasheedDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding = ItemNasheedBinding.inflate(
@@ -23,6 +25,10 @@ class NasheedAdapter : ListAdapter<Nasheed, NasheedAdapter.ViewHolder>(NasheedDi
 
         holder.binding.name.text = nasheed.name
         holder.binding.cover.setImageResource(nasheed.cover)
+
+        holder.binding.root.setOnClickListener {
+            itemClickListener.onItemClick(nasheed)
+        }
     }
 
     class NasheedDiffCallback : DiffUtil.ItemCallback<Nasheed>() {
@@ -33,6 +39,10 @@ class NasheedAdapter : ListAdapter<Nasheed, NasheedAdapter.ViewHolder>(NasheedDi
         override fun areContentsTheSame(oldItem: Nasheed, newItem: Nasheed): Boolean {
             return oldItem == newItem
         }
+    }
+
+    class NasheedItemCallback(val itemClickListener: (item: Nasheed) -> Unit) {
+        fun onItemClick(item: Nasheed) = itemClickListener(item)
     }
 
     class ViewHolder(val binding: ItemNasheedBinding)
