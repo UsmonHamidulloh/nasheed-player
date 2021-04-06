@@ -32,58 +32,16 @@ class PlayerActivity : AppCompatActivity() {
 
         bundle = intent.extras
 
-        nasheed = Nasheed(
-            id = bundle!!.getInt("id"),
-            name = bundle!!.getString("name")!!,
-            path = bundle!!.getInt("path"),
-            cover = bundle!!.getInt("cover")
-        )
+        receiveBundleData()
 
         mediaPlayer = MediaPlayer.create(this, nasheed.path)
+        mediaPlayer.start()
 
         calculateTime(mediaPlayer.duration)
 
-        mediaPlayer.start()
-
-        if (hours > 0) {
-            binding.duration.text = "$hours:$minut:$second"
-        } else {
-            binding.duration.text = "$minut:$second"
-        }
-
-        binding.resumePause.setOnClickListener {
-            if (mediaPlayer.isPlaying) {
-                binding.resumePause.setImageResource(R.drawable.ic_play)
-
-                mediaPlayer.pause()
-                length = mediaPlayer.currentPosition
-            } else {
-                binding.resumePause.setImageResource(R.drawable.ic_pause)
-
-                mediaPlayer.seekTo(length)
-                mediaPlayer.start()
-            }
-
-        }
-
-        binding.positionBar.max = mediaPlayer.duration
-
-        binding.positionBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
-            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-                if (fromUser) {
-                    mediaPlayer.seekTo(progress)
-                    mediaPlayer.start()
-                }
-            }
-
-            override fun onStartTrackingTouch(seekBar: SeekBar?) {
-
-            }
-
-            override fun onStopTrackingTouch(seekBar: SeekBar?) {
-
-            }
-        })
+        resumePauseClickListener()
+        setDurationText()
+        seekBarChangeListener()
 
         Thread(Runnable {
             while (mediaPlayer != null) {
@@ -97,6 +55,66 @@ class PlayerActivity : AppCompatActivity() {
                 }
             }
         }).start()
+    }
+
+    private fun receiveBundleData() {
+        nasheed = Nasheed(
+            id = bundle!!.getInt("id"),
+            name = bundle!!.getString("name")!!,
+            path = bundle!!.getInt("path"),
+            cover = bundle!!.getInt("cover")
+        )
+    }
+
+    private fun setDurationText() {
+        if (hours > 0) {
+            binding.duration.text = "$hours:$minut:$second"
+        } else {
+            binding.duration.text = "$minut:$second"
+        }
+    }
+
+    private fun seekBarChangeListener() {
+        binding.positionBar.max = mediaPlayer.duration
+        binding.positionBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+                if (fromUser) {
+                    mediaPlayer.seekTo(progress)
+                    mediaPlayer.start()
+
+                    changeResumePauseImage(image = R.drawable.ic_pause)
+                }
+            }
+
+            override fun onStartTrackingTouch(seekBar: SeekBar?) {
+
+            }
+
+            override fun onStopTrackingTouch(seekBar: SeekBar?) {
+
+            }
+        })
+    }
+
+    private fun resumePauseClickListener() {
+        binding.resumePause.setOnClickListener {
+            if (mediaPlayer.isPlaying) {
+                changeResumePauseImage(image = R.drawable.ic_play)
+
+                mediaPlayer.pause()
+                length = mediaPlayer.currentPosition
+            } else {
+                changeResumePauseImage(image = R.drawable.ic_pause)
+
+                mediaPlayer.seekTo(length)
+                mediaPlayer.start()
+            }
+
+        }
+    }
+
+    private fun changeResumePauseImage(image: Int) {
+        binding.resumePause.setImageResource(image)
     }
 
     var handler = @SuppressLint("HandlerLeak")
