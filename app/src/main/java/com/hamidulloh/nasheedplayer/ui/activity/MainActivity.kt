@@ -1,5 +1,6 @@
 package com.hamidulloh.nasheedplayer.ui.activity
 
+import android.content.Intent
 import android.media.MediaPlayer
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -25,9 +26,14 @@ class MainActivity : AppCompatActivity() {
         mediaPlayer = MediaPlayer()
 
         nasheedAdapter = NasheedAdapter(NasheedAdapter.NasheedItemCallback {
-            mediaPlayer.stop()
-            mediaPlayer = MediaPlayer.create(this, it.path)
-            mediaPlayer.start()
+            val intent = Intent(this, PlayerActivity::class.java)
+            intent.apply {
+                putExtra("id", it.id)
+                putExtra("name", it.name)
+                putExtra("path", it.path)
+                putExtra("cover", it.cover)
+            }
+            startActivity(intent)
 
             Log.d(TAG, "NasheedItemCallback: $it")
         })
