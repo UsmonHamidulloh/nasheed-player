@@ -2,7 +2,6 @@ package com.hamidulloh.nasheedplayer.ui.activity
 
 import android.media.MediaPlayer
 import android.os.Bundle
-import android.os.Handler
 import android.widget.ImageView
 import android.widget.SeekBar
 import androidx.appcompat.app.AppCompatActivity
@@ -15,10 +14,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var viewModel: ViewModel
     private lateinit var mediaPlayer: MediaPlayer
     private lateinit var resumePause: ImageView
-    private lateinit var runnable: Runnable
     private lateinit var seekBar: SeekBar
 
-    private var handler = Handler()
     private var length = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,6 +26,7 @@ class MainActivity : AppCompatActivity() {
         viewModel.nasheedLiveData.observe(this, { nasheed ->
             mediaPlayer = MediaPlayer.create(this, nasheed.path)
             mediaPlayer.start()
+
         })
 
         viewModel.resumePause.observe(this, {
@@ -55,6 +53,17 @@ class MainActivity : AppCompatActivity() {
 
         viewModel.seekBar.observe(this, { positionBar ->
             seekBar = positionBar
+
+            object : Thread() {
+                override fun run() {
+                    super.run()
+
+                    while (seekBar.progress <= mediaPlayer.duration && mediaPlayer.isPlaying) {
+                        seekBar.progress = mediaPlayer.currentPosition
+                        sleep(1_000)
+                    }
+                }
+            }.start()
 
             seekBar.max = mediaPlayer.duration
             seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
