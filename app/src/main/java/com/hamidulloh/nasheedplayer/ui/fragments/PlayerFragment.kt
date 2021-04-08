@@ -62,8 +62,10 @@ class PlayerFragment : Fragment() {
         viewModel.durationText.observe(requireActivity(), {
             duration = it
 
-            binding.duration.text = calculateTime(duration)
-            binding.positionBar.max = duration
+            if (_binding != null) {
+                binding.duration.text = calculateTime(duration)
+                binding.positionBar.max = duration
+            }
         })
 
         binding.positionBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
@@ -83,10 +85,12 @@ class PlayerFragment : Fragment() {
         })
 
         viewModel.mediaCurrentPosition.observe(requireActivity(), { currentPosition ->
-            binding.positionBar.progress = currentPosition
-            binding.firstTime.text = createTimeLabel(currentPosition)
+            if (_binding != null) {
+                binding.positionBar.progress = currentPosition
+                binding.firstTime.text = createTimeLabel(currentPosition)
 
-            Log.d(TAG, "mediaCurrentPosition: $currentPosition")
+                Log.d(TAG, "mediaCurrentPosition: $currentPosition")
+            }
         })
 
         viewModel.progress.value = binding.positionBar.progress
