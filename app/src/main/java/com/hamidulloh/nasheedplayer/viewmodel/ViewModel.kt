@@ -1,15 +1,19 @@
 package com.hamidulloh.nasheedplayer.viewmodel
 
-import android.widget.ImageView
-import android.widget.SeekBar
-import android.widget.TextView
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.hamidulloh.nasheedplayer.model.Nasheed
 
 class ViewModel : ViewModel() {
     var nasheedLiveData = MutableLiveData<Nasheed>()
-    var resumePause = MutableLiveData<ImageView>()
-    var durationText = MutableLiveData<TextView>()
-    var seekBar = MutableLiveData<SeekBar>()
+    var durationText = MutableLiveData<Int>()
+
+    var isNasheedPlaying = MutableLiveData<Boolean>()
+
+    var isPlaying = MutableLiveData<Boolean>()  //done
+    var playerPauseClickEvent = MutableLiveData<Boolean>()  //done
+
+    var isSeekBarHoldByUser = MutableLiveData<Boolean>()
+    var mediaCurrentPosition = MutableLiveData<Int>()
+    var progress = MutableLiveData<Int>()
 }

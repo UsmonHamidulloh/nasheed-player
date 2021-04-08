@@ -2,21 +2,18 @@ package com.hamidulloh.nasheedplayer.ui.activity
 
 import android.media.MediaPlayer
 import android.os.Bundle
-import android.widget.ImageView
-import android.widget.SeekBar
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.hamidulloh.nasheedplayer.R
-import com.hamidulloh.nasheedplayer.utills.calculateTime
 import com.hamidulloh.nasheedplayer.viewmodel.ViewModel
 
 class MainActivity : AppCompatActivity() {
     private lateinit var viewModel: ViewModel
     private lateinit var mediaPlayer: MediaPlayer
-    private lateinit var resumePause: ImageView
-    private lateinit var seekBar: SeekBar
 
-    private var length = 0
+    private var isSeekBarHoldByUser = false
+    private var TAG = "MainActivity"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -27,61 +24,49 @@ class MainActivity : AppCompatActivity() {
             mediaPlayer = MediaPlayer.create(this, nasheed.path)
             mediaPlayer.start()
 
-        })
-
-        viewModel.resumePause.observe(this, {
-            resumePause = it
-
-            resumePause.setOnClickListener {
-                if (mediaPlayer.isPlaying) {
-                    resumePause.setImageResource(R.drawable.ic_play)
-
-                    mediaPlayer.pause()
-                    length = mediaPlayer.currentPosition
-                } else {
-                    resumePause.setImageResource(R.drawable.ic_pause)
-
-                    mediaPlayer.seekTo(length)
-                    mediaPlayer.start()
-                }
-            }
-        })
-
-        viewModel.durationText.observe(this, { durationText ->
-            durationText.text = calculateTime(mediaPlayer.duration)
-        })
-
-        viewModel.seekBar.observe(this, { positionBar ->
-            seekBar = positionBar
+            viewModel.durationText.value = mediaPlayer.duration
 
             object : Thread() {
                 override fun run() {
                     super.run()
 
-                    while (seekBar.progress <= mediaPlayer.duration && mediaPlayer.isPlaying) {
-                        seekBar.progress = mediaPlayer.currentPosition
+                    while (mediaPlayer.currentPosition <= mediaPlayer.duration) {
+                        viewModel.mediaCurrentPosition.postValue(mediaPlayer.currentPosition)
                         sleep(1_000)
+
+                        Log.d(TAG, "run: ${mediaPlayer.currentPosition}")
                     }
                 }
             }.start()
 
-            seekBar.max = mediaPlayer.duration
-            seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
-                override fun onProgressChanged(
-                    seekBar: SeekBar?,
-                    progress: Int,
-                    fromUser: Boolean
-                ) {
-                    if (fromUser) {
-                        mediaPlayer.seekTo(progress)
-                        mediaPlayer.start()
+            Log.d(TAG, "mediaCurrentPosition (value): ${mediaPlayer.currentPosition}")
 
-                        resumePause.setImageResource(R.drawable.ic_pause)
-                    }
-                }
-                override fun onStartTrackingTouch(seekBar: SeekBar?) {}
-                override fun onStopTrackingTouch(seekBar: SeekBar?) {}
-            })
         })
+
+        viewModel.progress.observe(this, { progress ->
+            mediaPlayer.seekTo(progress)
+        })
+
+        viewModel.playerPauseClickEvent.observe(this, { clickEvent ->
+            if (clickEvent) {
+                if (mediaPlayer.isPlaying) {
+                    mediaPlayer.pause()
+
+                    viewModel.isPlaying.value = false
+                } else {
+                    mediaPlayer.start()
+
+                    viewModel.isPlaying.value = true
+                }
+
+                viewModel.playerPauseClickEvent.value = false
+            }
+
+        })
+
+        viewModel.isSeekBarHoldByUser.observe(this, {
+            isSeekBarHoldByUser = it
+        })
+
     }
 }
