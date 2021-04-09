@@ -4,5 +4,6 @@ data class Nasheed(
     val id: Int,
     val name: String,
     val path: Int,
-    val cover: Int
+    val cover: Int,
+    val filename: String
 )

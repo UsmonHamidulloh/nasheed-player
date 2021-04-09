@@ -30,7 +30,8 @@ class ListFragment : Fragment() {
                 id = it.id,
                 name = it.name,
                 path = it.path,
-                cover = it.cover
+                cover = it.cover,
+                filename = it.filename
             )
             findNavController().navigate(navDirections)
 

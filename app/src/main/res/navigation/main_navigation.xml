@@ -28,5 +28,8 @@
         <argument
             android:name="path"
             app:argType="integer" />
+        <argument
+            android:name="filename"
+            app:argType="string" />
     </fragment>
 </navigation>

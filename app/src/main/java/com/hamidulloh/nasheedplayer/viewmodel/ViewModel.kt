@@ -8,10 +8,8 @@ class ViewModel : ViewModel() {
     var nasheedLiveData = MutableLiveData<Nasheed>()
     var durationText = MutableLiveData<Int>()
 
-    var isNasheedPlaying = MutableLiveData<Boolean>()
-
-    var isPlaying = MutableLiveData<Boolean>()  //done
-    var playerPauseClickEvent = MutableLiveData<Boolean>()  //done
+    var isPlaying = MutableLiveData<Boolean>()
+    var playerPauseClickEvent = MutableLiveData<Boolean>()
 
     var isSeekBarHoldByUser = MutableLiveData<Boolean>()
     var mediaCurrentPosition = MutableLiveData<Int>()

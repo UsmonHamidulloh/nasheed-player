@@ -1,6 +1,7 @@
 package com.hamidulloh.nasheedplayer.ui.activity
 
 import android.media.MediaPlayer
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
@@ -10,7 +11,7 @@ import com.hamidulloh.nasheedplayer.viewmodel.ViewModel
 
 class MainActivity : AppCompatActivity() {
     private lateinit var viewModel: ViewModel
-    private lateinit var mediaPlayer: MediaPlayer
+    private var mediaPlayer: MediaPlayer? = null
 
     private var isSeekBarHoldByUser = false
     private var TAG = "MainActivity"
@@ -21,40 +22,57 @@ class MainActivity : AppCompatActivity() {
         viewModel = ViewModelProvider(this).get(ViewModel::class.java)
 
         viewModel.nasheedLiveData.observe(this, { nasheed ->
-            mediaPlayer = MediaPlayer.create(this, nasheed.path)
-            mediaPlayer.start()
+            if (mediaPlayer == null) {
+                mediaPlayer = MediaPlayer.create(this, nasheed.path)
+                mediaPlayer?.start()
+            } else {
+                val uri =
+                    Uri.parse("android.resource://com.hamidulloh.nasheedplayer/raw/${nasheed.filename}")
 
-            viewModel.durationText.value = mediaPlayer.duration
+                Log.d(TAG, "onCreate: ${uri.toString()}")
+                mediaPlayer?.apply {
+                    reset()
+                    setDataSource(this@MainActivity, uri)
+                    prepare()
+                    start()
+
+                    viewModel.isPlaying.value = true
+                }
+            }
+
+            Log.d(TAG, "MediaPlayer: $mediaPlayer")
+
+            viewModel.durationText.value = mediaPlayer?.duration
 
             object : Thread() {
                 override fun run() {
                     super.run()
 
-                    while (mediaPlayer.currentPosition <= mediaPlayer.duration) {
-                        viewModel.mediaCurrentPosition.postValue(mediaPlayer.currentPosition)
+                    while (mediaPlayer?.currentPosition!! <= mediaPlayer?.duration!!) {
+                        viewModel.mediaCurrentPosition.postValue(mediaPlayer?.currentPosition)
                         sleep(1_000)
 
-                        Log.d(TAG, "run: ${mediaPlayer.currentPosition}")
+                        Log.d(TAG, "run: ${mediaPlayer?.currentPosition}")
                     }
                 }
             }.start()
 
-            Log.d(TAG, "mediaCurrentPosition (value): ${mediaPlayer.currentPosition}")
+            Log.d(TAG, "mediaCurrentPosition (value): ${mediaPlayer?.currentPosition}")
 
         })
 
         viewModel.progress.observe(this, { progress ->
-            mediaPlayer.seekTo(progress)
+            mediaPlayer?.seekTo(progress)
         })
 
         viewModel.playerPauseClickEvent.observe(this, { clickEvent ->
             if (clickEvent) {
-                if (mediaPlayer.isPlaying) {
-                    mediaPlayer.pause()
+                if (mediaPlayer?.isPlaying!!) {
+                    mediaPlayer?.pause()
 
                     viewModel.isPlaying.value = false
                 } else {
-                    mediaPlayer.start()
+                    mediaPlayer?.start()
 
                     viewModel.isPlaying.value = true
                 }

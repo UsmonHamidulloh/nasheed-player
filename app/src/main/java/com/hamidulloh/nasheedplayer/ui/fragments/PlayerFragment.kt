@@ -44,16 +44,21 @@ class PlayerFragment : Fragment() {
         viewModel.nasheedLiveData.value = nasheed
 
         binding.resumePause.setOnClickListener {
-            viewModel.playerPauseClickEvent.value = true
+            if (_binding != null) {
+                viewModel.playerPauseClickEvent.value = true
+            }
         }
 
         viewModel.isPlaying.observe(requireActivity(), { mediaIsPlaying ->
-            if (mediaIsPlaying) {
-                binding.resumePause.setImageResource(R.drawable.ic_pause)
-            } else {
-                binding.resumePause.setImageResource(R.drawable.ic_play)
+            if (_binding != null) {
+                if (mediaIsPlaying) {
+                    binding.resumePause.setImageResource(R.drawable.ic_pause)
+                } else {
+                    binding.resumePause.setImageResource(R.drawable.ic_play)
+                }
+                isNasheedPlaying = mediaIsPlaying
             }
-            isNasheedPlaying = mediaIsPlaying
+
 
             Log.d(TAG, "recieve mediaIsPlaying: $mediaIsPlaying")
             Log.d(TAG, "recieve isNasheedPlaying: $isNasheedPlaying")
@@ -103,7 +108,8 @@ class PlayerFragment : Fragment() {
             id = args.id,
             name = args.name,
             path = args.path,
-            cover = args.cover
+            cover = args.cover,
+            filename = args.filename
         )
     }
 
