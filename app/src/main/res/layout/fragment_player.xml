@@ -115,4 +115,16 @@
         app:layout_constraintTop_toTopOf="@id/resume_pause"
         tools:ignore="ContentDescription,UnusedAttribute" />
 
+    <TextView
+        android:id="@+id/name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/app_name"
+        android:textSize="30sp"
+        android:fontFamily="@font/bismillah_script"
+        app:layout_constraintStart_toStartOf="@id/guideline_start"
+        app:layout_constraintEnd_toEndOf="@id/guideline_end"
+        app:layout_constraintTop_toBottomOf="@id/image"
+        app:layout_constraintBottom_toBottomOf="@id/positionBar" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

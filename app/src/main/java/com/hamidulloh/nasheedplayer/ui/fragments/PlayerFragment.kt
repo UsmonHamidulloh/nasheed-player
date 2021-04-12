@@ -14,6 +14,7 @@ import com.hamidulloh.nasheedplayer.databinding.FragmentPlayerBinding
 import com.hamidulloh.nasheedplayer.model.Nasheed
 import com.hamidulloh.nasheedplayer.utills.calculateTime
 import com.hamidulloh.nasheedplayer.utills.createTimeLabel
+import com.hamidulloh.nasheedplayer.utills.nasheedList
 import com.hamidulloh.nasheedplayer.viewmodel.ViewModel
 
 class PlayerFragment : Fragment() {
@@ -42,6 +43,11 @@ class PlayerFragment : Fragment() {
         viewModel = ViewModelProvider(requireActivity()).get(ViewModel::class.java)
 
         viewModel.nasheedLiveData.value = nasheed
+
+        viewModel.nasheedLiveData.observe(requireActivity(), { nasheedLiveData ->
+            binding.name.text = nasheedLiveData.name
+            binding.image.setImageResource(nasheed.cover)
+        })
 
         binding.resumePause.setOnClickListener {
             if (_binding != null) {
@@ -97,6 +103,30 @@ class PlayerFragment : Fragment() {
                 Log.d(TAG, "mediaCurrentPosition: $currentPosition")
             }
         })
+
+        binding.next.setOnClickListener {
+            if (nasheed.id != nasheedList().size - 1) {
+                viewModel.nasheedLiveData.value = nasheedList()[nasheed.id + 1]
+
+                Log.d(TAG, "nextBtn:  nextNasheedIs: ${nasheedList()[nasheed.id + 1].name}")
+            } else {
+                viewModel.nasheedLiveData.value = nasheedList()[0]
+
+                Log.d(TAG, "nextBtn: goToFirstNasheed")
+            }
+        }
+
+        binding.previous.setOnClickListener {
+            if (nasheed.id != nasheedList()[0].id) {
+                viewModel.nasheedLiveData.value = nasheedList()[nasheed.id - 1]
+
+                Log.d(TAG, "previous: previousNasheedIs: ${nasheedList()[nasheed.id - 1].name}")
+            } else {
+                viewModel.nasheedLiveData.value = nasheedList()[0]
+
+                Log.d(TAG, "nextBtn: goToFirstNasheed")
+            }
+        }
 
         viewModel.progress.value = binding.positionBar.progress
 

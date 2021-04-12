@@ -27,7 +27,9 @@ class MainActivity : AppCompatActivity() {
                 mediaPlayer?.start()
             } else {
                 val uri =
-                    Uri.parse("android.resource://com.hamidulloh.nasheedplayer/raw/${nasheed.filename}")
+                    Uri.parse("android.resource://com.hamidulloh.nasheedplayer/raw/" +
+                            nasheed.filename
+                    )
 
                 Log.d(TAG, "onCreate: ${uri.toString()}")
                 mediaPlayer?.apply {
