@@ -10,7 +10,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hamidulloh.nasheedplayer.databinding.FragmentListBinding
 import com.hamidulloh.nasheedplayer.ui.adapter.NasheedAdapter
-import com.hamidulloh.nasheedplayer.utills.nasheedList
+import com.hamidulloh.nasheedplayer.utills.listNasheed
 
 class ListFragment : Fragment() {
     private var _binding: FragmentListBinding? = null
@@ -38,7 +38,7 @@ class ListFragment : Fragment() {
             Log.d(TAG, "NasheedItemCallback: $it")
         })
 
-        nasheedAdapter.submitList(nasheedList())
+        nasheedAdapter.submitList(listNasheed)
 
         binding.nasheedList.apply {
             adapter = nasheedAdapter

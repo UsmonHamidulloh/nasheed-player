@@ -14,7 +14,7 @@ import com.hamidulloh.nasheedplayer.databinding.FragmentPlayerBinding
 import com.hamidulloh.nasheedplayer.model.Nasheed
 import com.hamidulloh.nasheedplayer.utills.calculateTime
 import com.hamidulloh.nasheedplayer.utills.createTimeLabel
-import com.hamidulloh.nasheedplayer.utills.nasheedList
+import com.hamidulloh.nasheedplayer.utills.listNasheed
 import com.hamidulloh.nasheedplayer.viewmodel.ViewModel
 
 class PlayerFragment : Fragment() {
@@ -23,10 +23,14 @@ class PlayerFragment : Fragment() {
 
     private lateinit var viewModel: ViewModel
     private lateinit var nasheed: Nasheed
+    private var index = 0
 
     private var duration = 0
     private var isHoldByUser = false
     private var isNasheedPlaying = true
+
+    private var isNext = false
+    private var isPrevious = false
 
     private var TAG = "PlayerFragment"
 
@@ -47,6 +51,11 @@ class PlayerFragment : Fragment() {
         viewModel.nasheedLiveData.observe(requireActivity(), { nasheedLiveData ->
             binding.name.text = nasheedLiveData.name
             binding.image.setImageResource(nasheed.cover)
+
+            nasheed = nasheedLiveData
+
+            Log.d(TAG, "nextBtn: liveData $index")
+            index = listNasheed.indexOf(nasheed)
         })
 
         binding.resumePause.setOnClickListener {
@@ -105,24 +114,25 @@ class PlayerFragment : Fragment() {
         })
 
         binding.next.setOnClickListener {
-            if (nasheed.id != nasheedList().size - 1) {
-                viewModel.nasheedLiveData.value = nasheedList()[nasheed.id + 1]
+            if (index < listNasheed.size - 1) {
+                Log.d(TAG, "nextBtn: old.id: ${index}, new.id: ${index + 1}")
+                Log.d(TAG, "nextBtn:  nextNasheedIs: ${listNasheed[index + 1].name}")
 
-                Log.d(TAG, "nextBtn:  nextNasheedIs: ${nasheedList()[nasheed.id + 1].name}")
+                viewModel.nasheedLiveData.value = listNasheed[index + 1]
             } else {
-                viewModel.nasheedLiveData.value = nasheedList()[0]
+                viewModel.nasheedLiveData.value = listNasheed[0]
 
                 Log.d(TAG, "nextBtn: goToFirstNasheed")
             }
         }
 
         binding.previous.setOnClickListener {
-            if (nasheed.id != nasheedList()[0].id) {
-                viewModel.nasheedLiveData.value = nasheedList()[nasheed.id - 1]
+            if (index < listNasheed[0].id) {
+                viewModel.nasheedLiveData.value = listNasheed[index - 1]
 
-                Log.d(TAG, "previous: previousNasheedIs: ${nasheedList()[nasheed.id - 1].name}")
+                Log.d(TAG, "previous: previousNasheedIs: ${listNasheed[nasheed.id - 1].name}")
             } else {
-                viewModel.nasheedLiveData.value = nasheedList()[0]
+                viewModel.nasheedLiveData.value = listNasheed[0]
 
                 Log.d(TAG, "nextBtn: goToFirstNasheed")
             }
