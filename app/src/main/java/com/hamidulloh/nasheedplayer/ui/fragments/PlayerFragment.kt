@@ -20,17 +20,12 @@ import com.hamidulloh.nasheedplayer.viewmodel.ViewModel
 class PlayerFragment : Fragment() {
     private var _binding: FragmentPlayerBinding? = null
     private val binding get() = _binding!!
-
     private lateinit var viewModel: ViewModel
     private lateinit var nasheed: Nasheed
     private var index = 0
-
     private var isHoldByUser = false
-
     private var duration = 0
     private var isNasheedPlaying = true
-
-    private var TAG = "PlayerFragment"
     private val args: PlayerFragmentArgs by navArgs()
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -46,10 +41,12 @@ class PlayerFragment : Fragment() {
         viewModel.nasheedLiveData.value = nasheed
 
         viewModel.nasheedLiveData.observe(requireActivity(), { nasheedLiveData ->
-            binding.name.text = nasheedLiveData.name
-            binding.image.setImageResource(nasheed.cover)
-            nasheed = nasheedLiveData
-            index = listNasheed.indexOf(nasheed)
+            if (_binding != null) {
+                binding.name.text = nasheedLiveData.name
+                binding.image.setImageResource(nasheed.cover)
+                nasheed = nasheedLiveData
+                index = listNasheed.indexOf(nasheed)
+            }
         })
 
         binding.resumePause.setOnClickListener {
@@ -100,8 +97,13 @@ class PlayerFragment : Fragment() {
                     binding.positionBar.progress = currentPosition
                 }
                 binding.firstTime.text = createTimeLabel(currentPosition)
+            }
+        })
 
-                Log.d(TAG, "mediaCurrentPosition: $currentPosition")
+        viewModel.isNasheedEnded.observe(requireActivity(), {
+            if (it) {
+                checkNextNasheed()
+                viewModel.isNasheedEnded.value = false
             }
         })
 
@@ -110,14 +112,10 @@ class PlayerFragment : Fragment() {
         }
 
         binding.previous.setOnClickListener {
-            if (index < listNasheed[0].id) {
+            if (index != listNasheed[0].id) {
                 viewModel.nasheedLiveData.value = listNasheed[index - 1]
-
-                Log.d(TAG, "previous: previousNasheedIs: ${listNasheed[nasheed.id - 1].name}")
             } else {
                 viewModel.nasheedLiveData.value = listNasheed[0]
-
-                Log.d(TAG, "nextBtn: goToFirstNasheed")
             }
         }
 
@@ -128,14 +126,9 @@ class PlayerFragment : Fragment() {
 
     private fun checkNextNasheed() {
         if (index < listNasheed.size - 1) {
-            Log.d(TAG, "nextBtn: old.id: ${index}, new.id: ${index + 1}")
-            Log.d(TAG, "nextBtn:  nextNasheedIs: ${listNasheed[index + 1].name}")
-
             viewModel.nasheedLiveData.value = listNasheed[index + 1]
         } else {
             viewModel.nasheedLiveData.value = listNasheed[0]
-
-            Log.d(TAG, "nextBtn: goToFirstNasheed")
         }
     }
 

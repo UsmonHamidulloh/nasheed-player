@@ -12,4 +12,6 @@ class ViewModel : ViewModel() {
     var isSeekBarHoldByUser = MutableLiveData<Boolean>()
     var mediaCurrentPosition = MutableLiveData<Int>()
     var progress = MutableLiveData<Int>()
+
+    var isNasheedEnded = MutableLiveData<Boolean>()
 }

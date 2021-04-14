@@ -9,11 +9,11 @@ import androidx.lifecycle.ViewModelProvider
 import com.hamidulloh.nasheedplayer.R
 import com.hamidulloh.nasheedplayer.viewmodel.ViewModel
 
+
 class MainActivity : AppCompatActivity() {
     private lateinit var viewModel: ViewModel
     private var mediaPlayer: MediaPlayer? = null
     private var isSeekBarHoldByUser = false
-    private var TAG = "MainActivity"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -41,6 +41,10 @@ class MainActivity : AppCompatActivity() {
                 }
             }
 
+            mediaPlayer?.setOnCompletionListener {
+                viewModel.isNasheedEnded.value = true
+            }
+
             viewModel.durationText.value = mediaPlayer?.duration
 
             object : Thread() {
@@ -54,6 +58,8 @@ class MainActivity : AppCompatActivity() {
                 }
             }.start()
         })
+
+
 
         viewModel.progress.observe(this, { progress ->
             mediaPlayer?.seekTo(progress)
