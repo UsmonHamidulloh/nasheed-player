@@ -12,7 +12,6 @@ import com.hamidulloh.nasheedplayer.viewmodel.ViewModel
 class MainActivity : AppCompatActivity() {
     private lateinit var viewModel: ViewModel
     private var mediaPlayer: MediaPlayer? = null
-
     private var isSeekBarHoldByUser = false
     private var TAG = "MainActivity"
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,11 +26,11 @@ class MainActivity : AppCompatActivity() {
                 mediaPlayer?.start()
             } else {
                 val uri =
-                    Uri.parse("android.resource://com.hamidulloh.nasheedplayer/raw/" +
-                            nasheed.filename
+                    Uri.parse(
+                        "android.resource://com.hamidulloh.nasheedplayer/raw/" +
+                                nasheed.filename
                     )
 
-                Log.d(TAG, "onCreate: ${uri.toString()}")
                 mediaPlayer?.apply {
                     reset()
                     setDataSource(this@MainActivity, uri)
@@ -42,8 +41,6 @@ class MainActivity : AppCompatActivity() {
                 }
             }
 
-            Log.d(TAG, "MediaPlayer: $mediaPlayer")
-
             viewModel.durationText.value = mediaPlayer?.duration
 
             object : Thread() {
@@ -53,14 +50,9 @@ class MainActivity : AppCompatActivity() {
                     while (mediaPlayer?.currentPosition!! <= mediaPlayer?.duration!!) {
                         viewModel.mediaCurrentPosition.postValue(mediaPlayer?.currentPosition)
                         sleep(1_000)
-
-                        Log.d(TAG, "run: ${mediaPlayer?.currentPosition}")
                     }
                 }
             }.start()
-
-            Log.d(TAG, "mediaCurrentPosition (value): ${mediaPlayer?.currentPosition}")
-
         })
 
         viewModel.progress.observe(this, { progress ->
@@ -87,6 +79,5 @@ class MainActivity : AppCompatActivity() {
         viewModel.isSeekBarHoldByUser.observe(this, {
             isSeekBarHoldByUser = it
         })
-
     }
 }
