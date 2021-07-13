@@ -29,8 +29,10 @@ class ListFragment : Fragment() {
             val navDirections = ListFragmentDirections.actionListFragmentToPlayerFragment(
                 id = it.id,
                 name = it.name,
+                author = it.author,
+                duration = it.duration,
                 path = it.path,
-                cover = it.cover,
+                cover = it.image,
                 filename = it.filename
             )
             findNavController().navigate(navDirections)

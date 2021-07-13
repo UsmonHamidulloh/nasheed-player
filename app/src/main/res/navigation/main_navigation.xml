@@ -31,5 +31,12 @@
         <argument
             android:name="filename"
             app:argType="string" />
+        <argument
+            android:name="author"
+            app:argType="string"
+            android:defaultValue="Unknown" />
+        <argument
+            android:name="duration"
+            app:argType="string" />
     </fragment>
 </navigation>

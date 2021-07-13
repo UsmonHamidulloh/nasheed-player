@@ -9,13 +9,14 @@ import com.hamidulloh.nasheedplayer.databinding.ItemNasheedBinding
 import com.hamidulloh.nasheedplayer.model.Nasheed
 
 class NasheedAdapter(
-    val itemClickListener: NasheedItemCallback
+    private val itemClickListener: NasheedItemCallback
 ) : ListAdapter<Nasheed, NasheedAdapter.ViewHolder>(NasheedDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding = ItemNasheedBinding.inflate(
             LayoutInflater.from(parent.context),
-            parent, false)
+            parent, false
+        )
 
         return ViewHolder(binding)
     }
@@ -23,12 +24,21 @@ class NasheedAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val nasheed = getItem(position)
 
-        holder.binding.name.text = nasheed.name
-        holder.binding.cover.setImageResource(nasheed.cover)
+        holder.apply {
+            binding.apply {
+                nName.text = nasheed.name
+                nAuthor.text = nasheed.author
+                nDuration.text = nasheed.duration
 
-        holder.binding.root.setOnClickListener {
-            itemClickListener.onItemClick(nasheed)
+                nImage.setImageResource(nasheed.image)
+
+                root.setOnClickListener {
+                    itemClickListener.onItemClick(nasheed)
+                }
+            }
         }
+
+
     }
 
     class NasheedDiffCallback : DiffUtil.ItemCallback<Nasheed>() {
@@ -45,6 +55,5 @@ class NasheedAdapter(
         fun onItemClick(item: Nasheed) = itemClickListener(item)
     }
 
-    class ViewHolder(val binding: ItemNasheedBinding)
-        : RecyclerView.ViewHolder(binding.root)
+    class ViewHolder(val binding: ItemNasheedBinding) : RecyclerView.ViewHolder(binding.root)
 }

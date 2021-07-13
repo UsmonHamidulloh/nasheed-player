@@ -1,7 +1,6 @@
 package com.hamidulloh.nasheedplayer.ui.fragments
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -43,7 +42,7 @@ class PlayerFragment : Fragment() {
         viewModel.nasheedLiveData.observe(requireActivity(), { nasheedLiveData ->
             if (_binding != null) {
                 binding.name.text = nasheedLiveData.name
-                binding.image.setImageResource(nasheed.cover)
+                binding.image.setImageResource(nasheed.image)
                 nasheed = nasheedLiveData
                 index = listNasheed.indexOf(nasheed)
             }
@@ -136,8 +135,10 @@ class PlayerFragment : Fragment() {
         nasheed = Nasheed(
             id = args.id,
             name = args.name,
+            author = args.author,
+            duration = args.duration,
             path = args.path,
-            cover = args.cover,
+            image = args.cover,
             filename = args.filename
         )
     }

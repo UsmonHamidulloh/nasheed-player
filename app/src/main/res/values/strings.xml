@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Nasheed Player</string>
+    <string name="title_list_fragment">Nasheed Player</string>
+    <string name="nasheed_list_fragment_list">Nasheed List</string>
 </resources>

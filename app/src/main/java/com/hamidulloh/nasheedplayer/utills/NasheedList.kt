@@ -7,21 +7,27 @@ val listNasheed = arrayListOf<Nasheed>(
     Nasheed(
         id = 0,
         name = "Kuntu Maitan",
-        R.raw.kuntu_maitan,
-        R.drawable.nasheed_player,
-        "kuntu_maitan"),
+        author = "Unknown",
+        duration = "3:15",
+        path    = R.raw.kuntu_maitan,
+        image   = R.drawable.nasheed_player,
+        filename = "kuntu_maitan"),
+
     Nasheed(
-        1,
-        "Mahum Bi Ummati Ahmadin",
-        R.raw.mahum_bi_ummati_ahmadin,
-        R.drawable.nasheed_player,
-        "mahum_bi_ummati_ahmadin"
-    ),
+        id = 0,
+        name = "Mahum bi Ummati Ahmad",
+        author = "Unknown",
+        duration = "3:12",
+        path    = R.raw.mahum_bi_ummati_ahmadin,
+        image   = R.drawable.nasheed_player,
+        filename = "mahum_bi_ummati_ahmadin"),
+
     Nasheed(
-        2,
-        "Shukran ya robbi",
-        R.raw.shukran_ya_robbi,
-        R.drawable.nasheed_player,
-        "shukran_ya_robbi"
-    )
+        id = 0,
+        name = "Shukran ya robbi",
+        author = "Unknown",
+        duration = "4:49",
+        path    = R.raw.shukran_ya_robbi,
+        image   = R.drawable.nasheed_player,
+        filename = "shukran_ya_robbi"),
 )
