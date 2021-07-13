@@ -2,4 +2,5 @@
 <resources>
     <string name="title_list_fragment">Library</string>
     <string name="nasheed_list_fragment_list">Nasheed List</string>
+    <string name="now_playing_fragment_player">Now Playing</string>
 </resources>

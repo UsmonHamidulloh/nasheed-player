@@ -4,127 +4,185 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/purple"
     tools:context=".ui.activity.PlayerActivity">
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline_start"
+    <TextView
+        android:id="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.25" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline_end"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.75" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline_top"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.12" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline_bottom"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.40" />
+        android:layout_marginTop="25dp"
+        android:fontFamily="@font/poppins_semi_bold"
+        android:text="@string/now_playing_fragment_player"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/image"
+        android:id="@+id/back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="21dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?attr/selectableItemBackground"
+        android:src="@drawable/ic_back"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="ContentDescription,UnusedAttribute" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/image_frame"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:src="@drawable/nasheed_player"
-        app:layout_constraintBottom_toBottomOf="@id/guideline_bottom"
-        app:layout_constraintEnd_toEndOf="@id/guideline_end"
-        app:layout_constraintStart_toStartOf="@id/guideline_start"
-        app:layout_constraintTop_toTopOf="@id/guideline_top"
-        tools:ignore="ContentDescription" />
+        android:elevation="0dp"
+        app:cardCornerRadius="10dp"
+        app:cardElevation="0dp"
+        app:layout_constraintBottom_toBottomOf="@id/g_n_bottom"
+        app:layout_constraintEnd_toEndOf="@id/g_n_end"
+        app:layout_constraintStart_toStartOf="@id/g_n_start"
+        app:layout_constraintTop_toTopOf="@id/g_n_top">
 
-    <androidx.appcompat.widget.AppCompatSeekBar
-        android:id="@+id/positionBar"
-        android:layout_width="300dp"
+        <ImageView
+            android:id="@+id/n_image"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:src="@drawable/nasheed_player"
+            tools:ignore="ContentDescription" />
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/g_n_start"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.24" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/g_n_end"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.755" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/g_n_top"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.185" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/g_n_bottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.4764" />
+
+    <TextView
+        android:id="@+id/n_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="130dp"
+        android:fontFamily="@font/poppins_semi_bold"
+        android:text="Shukran ya robbi"
+        android:textColor="@color/white"
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/image_frame"
+        tools:ignore="HardcodedText" />
+
+    <TextView
+        android:id="@+id/n_author"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:fontFamily="@font/poppins_semi_bold"
+        android:text="Unknown"
+        android:textColor="@color/white_50"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="@id/n_name"
+        app:layout_constraintTop_toBottomOf="@id/n_name"
+        tools:ignore="HardcodedText" />
+
+    <SeekBar
+        android:id="@+id/seekBar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="25dp"
+        android:progressDrawable="@drawable/seekbar_progress"
+        android:thumb="@drawable/seekbar_thumb"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/resume_pause"
-        app:layout_constraintTop_toBottomOf="@id/guideline_bottom" />
+        app:layout_constraintTop_toBottomOf="@id/n_author" />
 
     <TextView
-        android:id="@+id/first_time"
+        android:id="@+id/d_start"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="00:00"
-        app:layout_constraintStart_toStartOf="@id/positionBar"
-        app:layout_constraintTop_toBottomOf="@id/positionBar"
-        tools:ignore="HardcodedText" />
-
-    <TextView
-        android:id="@+id/duration"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="00:00"
-        app:layout_constraintEnd_toEndOf="@id/positionBar"
-        app:layout_constraintTop_toBottomOf="@id/positionBar"
-        tools:ignore="HardcodedText" />
-
-    <ImageView
-        android:id="@+id/previous"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:clickable="true"
-        android:focusable="true"
-        android:foreground="?attr/selectableItemBackground"
-        android:src="@drawable/ic_previous"
-        app:layout_constraintBottom_toBottomOf="@id/resume_pause"
-        app:layout_constraintEnd_toStartOf="@id/resume_pause"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="10dp"
+        android:fontFamily="@font/poppins_medium"
+        android:text="00.00"
+        android:textColor="@color/white"
+        android:textSize="12sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/resume_pause"
-        tools:ignore="ContentDescription,UnusedAttribute" />
+        app:layout_constraintTop_toBottomOf="@id/seekBar"
+        tools:ignore="HardcodedText" />
+
+    <TextView
+        android:id="@+id/d_end"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="16dp"
+        android:fontFamily="@font/poppins_medium"
+        android:text="4.12"
+        android:textColor="@color/white"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/seekBar"
+        tools:ignore="HardcodedText" />
 
     <ImageView
-        android:id="@+id/resume_pause"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:clickable="true"
-        android:focusable="true"
-        android:foreground="?attr/selectableItemBackground"
+        android:id="@+id/play_pause"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:src="@drawable/ic_pause"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/next"
-        app:layout_constraintStart_toEndOf="@id/previous"
-        app:layout_constraintTop_toBottomOf="@id/positionBar"
-        tools:ignore="ContentDescription,UnusedAttribute" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/seekBar"
+        tools:ignore="ContentDescription" />
 
     <ImageView
-        android:id="@+id/next"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:clickable="true"
-        android:focusable="true"
-        android:foreground="?attr/selectableItemBackground"
-        android:src="@drawable/ic_next"
-        app:layout_constraintBottom_toBottomOf="@id/resume_pause"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/resume_pause"
-        app:layout_constraintTop_toTopOf="@id/resume_pause"
-        tools:ignore="ContentDescription,UnusedAttribute" />
-
-    <TextView
-        android:id="@+id/name"
+        android:id="@+id/n_previous"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/app_name"
-        android:textSize="30sp"
-        android:fontFamily="@font/bismillah_script"
-        app:layout_constraintStart_toStartOf="@id/guideline_start"
-        app:layout_constraintEnd_toEndOf="@id/guideline_end"
-        app:layout_constraintTop_toBottomOf="@id/image"
-        app:layout_constraintBottom_toBottomOf="@id/positionBar" />
+        android:layout_marginEnd="32dp"
+        android:src="@drawable/ic_previous"
+        app:layout_constraintBottom_toBottomOf="@id/play_pause"
+        app:layout_constraintEnd_toStartOf="@id/play_pause"
+        app:layout_constraintTop_toTopOf="@id/play_pause"
+        tools:ignore="ContentDescription" />
+
+    <ImageView
+        android:id="@+id/n_next"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:src="@drawable/ic_next"
+        app:layout_constraintBottom_toBottomOf="@id/play_pause"
+        app:layout_constraintStart_toEndOf="@id/play_pause"
+        app:layout_constraintTop_toTopOf="@id/play_pause"
+        tools:ignore="ContentDescription" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
