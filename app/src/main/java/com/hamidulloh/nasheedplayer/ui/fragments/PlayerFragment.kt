@@ -41,14 +41,15 @@ class PlayerFragment : Fragment() {
 
         viewModel.nasheedLiveData.observe(requireActivity(), { nasheedLiveData ->
             if (_binding != null) {
-                binding.name.text = nasheedLiveData.name
-                binding.image.setImageResource(nasheed.image)
+                binding.nName.text = nasheedLiveData.name
+                binding.nImage.setImageResource(nasheed.image)
+                binding.nAuthor.text = nasheedLiveData.author
                 nasheed = nasheedLiveData
                 index = listNasheed.indexOf(nasheed)
             }
         })
 
-        binding.resumePause.setOnClickListener {
+        binding.playPause.setOnClickListener {
             if (_binding != null) {
                 viewModel.playerPauseClickEvent.value = true
             }
@@ -57,9 +58,9 @@ class PlayerFragment : Fragment() {
         viewModel.isPlaying.observe(requireActivity(), { mediaIsPlaying ->
             if (_binding != null) {
                 if (mediaIsPlaying) {
-                    binding.resumePause.setImageResource(R.drawable.ic_pause)
+                    binding.playPause.setImageResource(R.drawable.ic_pause)
                 } else {
-                    binding.resumePause.setImageResource(R.drawable.ic_play)
+                    binding.playPause.setImageResource(R.drawable.ic_play)
                 }
                 isNasheedPlaying = mediaIsPlaying
             }
@@ -69,12 +70,12 @@ class PlayerFragment : Fragment() {
             duration = it
 
             if (_binding != null) {
-                binding.duration.text = calculateTime(duration)
-                binding.positionBar.max = duration
+                binding.dEnd.text = calculateTime(duration)
+                binding.seekBar.max = duration
             }
         })
 
-        binding.positionBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+        binding.seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {}
 
             override fun onStartTrackingTouch(seekBar: SeekBar?) {
@@ -93,9 +94,9 @@ class PlayerFragment : Fragment() {
         viewModel.mediaCurrentPosition.observe(requireActivity(), { currentPosition ->
             if (_binding != null) {
                 if (!isHoldByUser) {
-                    binding.positionBar.progress = currentPosition
+                    binding.seekBar.progress = currentPosition
                 }
-                binding.firstTime.text = createTimeLabel(currentPosition)
+                binding.dStart.text = createTimeLabel(currentPosition)
             }
         })
 
@@ -106,11 +107,11 @@ class PlayerFragment : Fragment() {
             }
         })
 
-        binding.next.setOnClickListener {
+        binding.nNext.setOnClickListener {
             checkNextNasheed()
         }
 
-        binding.previous.setOnClickListener {
+        binding.nPrevious.setOnClickListener {
             if (index != listNasheed[0].id) {
                 viewModel.nasheedLiveData.value = listNasheed[index - 1]
             } else {
@@ -118,7 +119,7 @@ class PlayerFragment : Fragment() {
             }
         }
 
-        viewModel.progress.value = binding.positionBar.progress
+        viewModel.progress.value = binding.seekBar.progress
 
         return binding.root
     }
