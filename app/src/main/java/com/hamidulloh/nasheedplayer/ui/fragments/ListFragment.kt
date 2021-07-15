@@ -17,7 +17,6 @@ class ListFragment : Fragment() {
     private val binding get() = _binding!!
 
     private lateinit var nasheedAdapter: NasheedAdapter
-    private val TAG = "ListFragment"
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -36,8 +35,6 @@ class ListFragment : Fragment() {
                 filename = it.filename
             )
             findNavController().navigate(navDirections)
-
-            Log.d(TAG, "NasheedItemCallback: $it")
         })
 
         nasheedAdapter.submitList(listNasheed)

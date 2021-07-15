@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.SeekBar
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.hamidulloh.nasheedplayer.R
 import com.hamidulloh.nasheedplayer.databinding.FragmentPlayerBinding
@@ -49,6 +50,12 @@ class PlayerFragment : Fragment() {
             }
         })
 
+        //back to nasheed_list
+        binding.back.setOnClickListener {
+            findNavController().popBackStack()
+        }
+
+        //remote play and pause
         binding.playPause.setOnClickListener {
             if (_binding != null) {
                 viewModel.playerPauseClickEvent.value = true
